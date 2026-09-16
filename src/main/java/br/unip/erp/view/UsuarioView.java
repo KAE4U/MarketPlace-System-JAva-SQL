@@ -34,9 +34,10 @@ public class UsuarioView extends JInternalFrame {
     private final JTextField txtLogin = new JTextField(15);
     private final JPasswordField txtSenha = new JPasswordField(15);
     private final JCheckBox chkAtivo = new JCheckBox("Ativo", true);
+    private final JCheckBox chkAdmin = new JCheckBox("Perfil administrador (pode excluir dados)");
 
     private final DefaultTableModel tableModel =
-            new DefaultTableModel(new Object[]{"Codigo", "Nome", "Login", "Ativo"}, 0) {
+            new DefaultTableModel(new Object[]{"Codigo", "Nome", "Login", "Ativo", "Admin"}, 0) {
                 @Override public boolean isCellEditable(int r, int c) { return false; }
             };
     private final JTable tabela = new JTable(tableModel);
@@ -65,6 +66,7 @@ public class UsuarioView extends JInternalFrame {
         g.gridx = 0; g.gridy = 3; form.add(new JLabel("Senha:"), g);
         g.gridx = 1; form.add(txtSenha, g);
         g.gridx = 1; g.gridy = 4; form.add(chkAtivo, g);
+        g.gridx = 1; g.gridy = 5; form.add(chkAdmin, g);
 
         JPanel botoes = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 8));
         JButton btNovo = new JButton("Novo");
@@ -99,7 +101,8 @@ public class UsuarioView extends JInternalFrame {
         tableModel.setRowCount(0);
         List<Usuario> lista = controller.listar();
         for (Usuario u : lista) {
-            tableModel.addRow(new Object[]{u.getCodigo(), u.getNome(), u.getLogin(), u.getAtivo()});
+            tableModel.addRow(new Object[]{u.getCodigo(), u.getNome(), u.getLogin(),
+                    u.getAtivo(), u.getAdmin()});
         }
     }
 
@@ -116,6 +119,7 @@ public class UsuarioView extends JInternalFrame {
             txtLogin.setText(u.getLogin());
             txtSenha.setText(u.getSenha());
             chkAtivo.setSelected("S".equals(u.getAtivo()));
+            chkAdmin.setSelected(u.isAdmin());
         }
     }
 
@@ -125,6 +129,7 @@ public class UsuarioView extends JInternalFrame {
         txtLogin.setText("");
         txtSenha.setText("");
         chkAtivo.setSelected(true);
+        chkAdmin.setSelected(false);
         tabela.clearSelection();
     }
 
@@ -138,6 +143,7 @@ public class UsuarioView extends JInternalFrame {
             u.setLogin(txtLogin.getText());
             u.setSenha(new String(txtSenha.getPassword()));
             u.setAtivo(chkAtivo.isSelected() ? "S" : "N");
+            u.setAdmin(chkAdmin.isSelected() ? "S" : "N");
             controller.salvar(u);
             JOptionPane.showMessageDialog(this, "Usuario salvo com sucesso.");
             limpar();
@@ -149,6 +155,9 @@ public class UsuarioView extends JInternalFrame {
     }
 
     private void excluir() {
+        if (!br.unip.erp.util.Permissao.podeExcluir(this)) {
+            return;
+        }
         if (txtCodigo.getText().isBlank()) {
             JOptionPane.showMessageDialog(this, "Selecione um usuario para excluir.");
             return;

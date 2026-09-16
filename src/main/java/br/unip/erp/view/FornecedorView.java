@@ -3,6 +3,7 @@ package br.unip.erp.view;
 import br.unip.erp.controller.FornecedorController;
 import br.unip.erp.model.Fornecedor;
 import br.unip.erp.model.Pessoa;
+import br.unip.erp.util.Mascaras;
 import br.unip.erp.util.Tema;
 
 import javax.swing.BorderFactory;
@@ -101,6 +102,10 @@ public class FornecedorView extends JInternalFrame {
         tabela.getSelectionModel().addListSelectionListener(e -> selecionar());
         Tema.estilizarTabela(tabela);
 
+        // Mascaras dinamicas
+        Mascaras.cpfCnpj(txtCpfCnpj);
+        Mascaras.telefone(txtFone);
+
         JPanel topo = new JPanel(new BorderLayout());
         topo.add(form, BorderLayout.CENTER);
         topo.add(botoes, BorderLayout.SOUTH);
@@ -187,6 +192,9 @@ public class FornecedorView extends JInternalFrame {
     }
 
     private void excluir() {
+        if (!br.unip.erp.util.Permissao.podeExcluir(this)) {
+            return;
+        }
         if (txtCodigo.getText().isBlank()) {
             JOptionPane.showMessageDialog(this, "Selecione um fornecedor para excluir.");
             return;

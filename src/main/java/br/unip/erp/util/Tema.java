@@ -1,14 +1,17 @@
 package br.unip.erp.util;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.table.JTableHeader;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Window;
 
 /**
  * Centraliza o tema visual da aplicacao (FlatLaf dark) e helpers de estilizacao.
@@ -102,5 +105,32 @@ public final class Tema {
     /** Marca um campo com texto de placeholder (dica interna). */
     public static void placeholder(JComponent campo, String texto) {
         campo.putClientProperty("JTextField.placeholderText", texto);
+    }
+
+    /** Aplica o tema ESCURO e atualiza todas as janelas abertas. */
+    public static void aplicarEscuro(java.awt.Component origem) {
+        try {
+            FlatDarkLaf.setup();
+            atualizarJanelas();
+        } catch (Exception e) {
+            System.err.println("Falha ao aplicar tema escuro: " + e.getMessage());
+        }
+    }
+
+    /** Aplica o tema CLARO e atualiza todas as janelas abertas. */
+    public static void aplicarClaro(java.awt.Component origem) {
+        try {
+            FlatLightLaf.setup();
+            atualizarJanelas();
+        } catch (Exception e) {
+            System.err.println("Falha ao aplicar tema claro: " + e.getMessage());
+        }
+    }
+
+    /** Reaplica o Look & Feel atual em todas as janelas abertas (troca de tema em runtime). */
+    private static void atualizarJanelas() {
+        for (Window w : Window.getWindows()) {
+            SwingUtilities.updateComponentTreeUI(w);
+        }
     }
 }

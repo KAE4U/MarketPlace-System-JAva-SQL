@@ -159,7 +159,7 @@ public class CompraView extends JInternalFrame {
 
     private void atualizarTotal() {
         compraController.recalcularTotais(compra);
-        lblTotal.setText("Total: R$ " + compra.getTotal().toPlainString());
+        lblTotal.setText("Total: " + br.unip.erp.util.Mascaras.moeda(compra.getTotal()));
     }
 
     private void finalizar() {
@@ -173,8 +173,8 @@ public class CompraView extends JInternalFrame {
             compra.setUsuario(Sessao.getUsuarioLogado());
             int codigo = compraController.registrar(compra);
             JOptionPane.showMessageDialog(this,
-                    "Compra #" + codigo + " registrada com sucesso!\nTotal: R$ "
-                            + compra.getTotal().toPlainString());
+                    "Compra #" + codigo + " registrada com sucesso!\nTotal: "
+                            + br.unip.erp.util.Mascaras.moeda(compra.getTotal()));
             novaCompra();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(),

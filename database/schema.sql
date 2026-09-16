@@ -73,7 +73,8 @@ CREATE TABLE usuario (
     usu_login       VARCHAR(20)  NOT NULL UNIQUE,
     usu_senha       VARCHAR(20),
     usu_cadastro    DATE         DEFAULT CURRENT_DATE,
-    usu_ativo       CHAR(1)      NOT NULL DEFAULT 'S'
+    usu_ativo       CHAR(1)      NOT NULL DEFAULT 'S',
+    usu_admin       CHAR(1)      NOT NULL DEFAULT 'N'    -- S=Administrador (pode excluir dados)
 );
 
 -- =====================================================================
@@ -183,8 +184,8 @@ CREATE TABLE compra_produto (
 -- =====================================================================
 -- SEED: usuario administrador padrao (login: admin / senha: admin)
 -- =====================================================================
-INSERT INTO usuario (usu_nome, usu_login, usu_senha, usu_ativo)
-VALUES ('Administrador', 'admin', 'admin', 'S');
+INSERT INTO usuario (usu_nome, usu_login, usu_senha, usu_ativo, usu_admin)
+VALUES ('Administrador', 'admin', 'admin', 'S', 'S');
 
 -- Algumas formas de pagamento comuns
 INSERT INTO formapagto (fpg_nome, fpg_ativo) VALUES
