@@ -223,7 +223,7 @@ public class VendaView extends JInternalFrame {
 
     private void atualizarTotal() {
         vendaController.recalcularTotais(venda);
-        lblTotal.setText("Total: R$ " + venda.getTotal().toPlainString());
+        lblTotal.setText("Total: " + br.unip.erp.util.Mascaras.moeda(venda.getTotal()));
     }
 
     private void finalizar() {
@@ -237,8 +237,8 @@ public class VendaView extends JInternalFrame {
             venda.setUsuario(Sessao.getUsuarioLogado());
             int codigo = vendaController.registrar(venda);
             JOptionPane.showMessageDialog(this,
-                    "Venda #" + codigo + " registrada com sucesso!\nTotal: R$ "
-                            + venda.getTotal().toPlainString());
+                    "Venda #" + codigo + " registrada com sucesso!\nTotal: "
+                            + br.unip.erp.util.Mascaras.moeda(venda.getTotal()));
             novaVenda();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(),

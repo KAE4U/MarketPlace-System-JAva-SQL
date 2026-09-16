@@ -132,6 +132,9 @@ public class FormaPagamentoView extends JInternalFrame {
     }
 
     private void excluir() {
+        if (!br.unip.erp.util.Permissao.podeExcluir(this)) {
+            return;
+        }
         if (txtCodigo.getText().isBlank()) {
             JOptionPane.showMessageDialog(this, "Selecione um registro para excluir.");
             return;

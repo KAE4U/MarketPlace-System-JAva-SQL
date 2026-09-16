@@ -3,6 +3,7 @@ package br.unip.erp.view;
 import br.unip.erp.controller.ClienteController;
 import br.unip.erp.model.Cliente;
 import br.unip.erp.model.Pessoa;
+import br.unip.erp.util.Mascaras;
 import br.unip.erp.util.Tema;
 
 import javax.swing.BorderFactory;
@@ -102,6 +103,10 @@ public class ClienteView extends JInternalFrame {
         tabela.getSelectionModel().addListSelectionListener(e -> selecionar());
         Tema.estilizarTabela(tabela);
 
+        // Mascaras dinamicas
+        Mascaras.cpfCnpj(txtCpfCnpj);
+        Mascaras.telefone(txtFone);
+
         JPanel topo = new JPanel(new BorderLayout());
         topo.add(form, BorderLayout.CENTER);
         topo.add(botoes, BorderLayout.SOUTH);
@@ -119,7 +124,8 @@ public class ClienteView extends JInternalFrame {
         for (Cliente c : lista) {
             Pessoa p = c.getPessoa();
             tableModel.addRow(new Object[]{
-                    c.getCodigo(), p.getNome(), p.getCpfCnpj(), p.getCidade(), c.getLimiteCredito()});
+                    c.getCodigo(), p.getNome(), p.getCpfCnpj(), p.getCidade(),
+                    Mascaras.moeda(c.getLimiteCredito())});
         }
     }
 
@@ -177,9 +183,7 @@ public class ClienteView extends JInternalFrame {
             p.setFone1(txtFone.getText());
             p.setEmail(txtEmail.getText());
             c.setPessoa(p);
-            c.setLimiteCredito(txtLimite.getText().isBlank()
-                    ? BigDecimal.ZERO
-                    : new BigDecimal(txtLimite.getText().trim().replace(",", ".")));
+            c.setLimiteCredito(Mascaras.valorDe(txtLimite.getText()));
             controller.salvar(c);
             JOptionPane.showMessageDialog(this, "Cliente salvo com sucesso.");
             limpar();
@@ -194,6 +198,9 @@ public class ClienteView extends JInternalFrame {
     }
 
     private void excluir() {
+        if (!br.unip.erp.util.Permissao.podeExcluir(this)) {
+            return;
+        }
         if (txtCodigo.getText().isBlank()) {
             JOptionPane.showMessageDialog(this, "Selecione um cliente para excluir.");
             return;

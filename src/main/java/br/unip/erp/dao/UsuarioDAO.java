@@ -17,14 +17,15 @@ public class UsuarioDAO implements GenericDAO<Usuario> {
 
     @Override
     public int inserir(Usuario u) {
-        String sql = "INSERT INTO usuario (usu_nome, usu_login, usu_senha, usu_ativo) "
-                + "VALUES (?, ?, ?, ?) RETURNING usu_codigo";
+        String sql = "INSERT INTO usuario (usu_nome, usu_login, usu_senha, usu_ativo, usu_admin) "
+                + "VALUES (?, ?, ?, ?, ?) RETURNING usu_codigo";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, u.getNome());
             ps.setString(2, u.getLogin());
             ps.setString(3, u.getSenha());
             ps.setString(4, u.getAtivo());
+            ps.setString(5, u.getAdmin());
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     u.setCodigo(rs.getInt(1));
@@ -38,7 +39,7 @@ public class UsuarioDAO implements GenericDAO<Usuario> {
 
     @Override
     public void atualizar(Usuario u) {
-        String sql = "UPDATE usuario SET usu_nome=?, usu_login=?, usu_senha=?, usu_ativo=? "
+        String sql = "UPDATE usuario SET usu_nome=?, usu_login=?, usu_senha=?, usu_ativo=?, usu_admin=? "
                 + "WHERE usu_codigo=?";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -46,7 +47,8 @@ public class UsuarioDAO implements GenericDAO<Usuario> {
             ps.setString(2, u.getLogin());
             ps.setString(3, u.getSenha());
             ps.setString(4, u.getAtivo());
-            ps.setInt(5, u.getCodigo());
+            ps.setString(5, u.getAdmin());
+            ps.setInt(6, u.getCodigo());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException("Erro ao atualizar usuario: " + e.getMessage(), e);
@@ -127,6 +129,7 @@ public class UsuarioDAO implements GenericDAO<Usuario> {
             u.setCadastro(cad.toLocalDate());
         }
         u.setAtivo(rs.getString("usu_ativo"));
+        u.setAdmin(rs.getString("usu_admin"));
         return u;
     }
 }

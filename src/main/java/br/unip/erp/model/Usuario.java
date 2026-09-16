@@ -11,6 +11,7 @@ public class Usuario {
     private String senha;
     private LocalDate cadastro;
     private String ativo = "S";
+    private String admin = "N";   // S=Administrador (pode excluir dados)
 
     public int getCodigo() { return codigo; }
     public void setCodigo(int codigo) { this.codigo = codigo; }
@@ -29,6 +30,14 @@ public class Usuario {
 
     public String getAtivo() { return ativo; }
     public void setAtivo(String ativo) { this.ativo = ativo; }
+
+    public String getAdmin() { return admin; }
+    public void setAdmin(String admin) { this.admin = admin; }
+
+    /** Conveniencia: true se o usuario tem perfil de administrador. */
+    public boolean isAdmin() {
+        return "S".equalsIgnoreCase(admin);
+    }
 
     @Override
     public String toString() {

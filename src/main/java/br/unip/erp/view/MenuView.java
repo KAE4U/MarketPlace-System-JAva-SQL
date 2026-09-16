@@ -80,10 +80,26 @@ public class MenuView extends JFrame {
         JMenu movimentos = new JMenu("Movimentos");
         JMenuItem miVenda = new JMenuItem("Venda");
         JMenuItem miCompra = new JMenuItem("Compra");
+        JMenuItem miHistVenda = new JMenuItem("Histórico de Vendas");
+        JMenuItem miHistCompra = new JMenuItem("Histórico de Compras");
         miVenda.addActionListener(e -> abrir(new VendaView()));
         miCompra.addActionListener(e -> abrir(new CompraView()));
+        miHistVenda.addActionListener(e -> abrir(new HistoricoVendaView()));
+        miHistCompra.addActionListener(e -> abrir(new HistoricoCompraView()));
         movimentos.add(miVenda);
         movimentos.add(miCompra);
+        movimentos.addSeparator();
+        movimentos.add(miHistVenda);
+        movimentos.add(miHistCompra);
+
+        // --- Exibir (tema claro/escuro) ---
+        JMenu exibir = new JMenu("Exibir");
+        JMenuItem miTemaEscuro = new JMenuItem("Tema escuro");
+        JMenuItem miTemaClaro = new JMenuItem("Tema claro");
+        miTemaEscuro.addActionListener(e -> Tema.aplicarEscuro(this));
+        miTemaClaro.addActionListener(e -> Tema.aplicarClaro(this));
+        exibir.add(miTemaEscuro);
+        exibir.add(miTemaClaro);
 
         // --- Sair ---
         JMenu sair = new JMenu("Sair");
@@ -96,6 +112,7 @@ public class MenuView extends JFrame {
 
         barra.add(cadastros);
         barra.add(movimentos);
+        barra.add(exibir);
         barra.add(sair);
         return barra;
     }

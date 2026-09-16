@@ -106,7 +106,8 @@ public class ProdutoView extends JInternalFrame {
         List<Produto> lista = controller.listar();
         for (Produto p : lista) {
             tableModel.addRow(new Object[]{
-                    p.getCodigo(), p.getNome(), p.getUnidade(), p.getEstoque(), p.getPreco()});
+                    p.getCodigo(), p.getNome(), p.getUnidade(), p.getEstoque(),
+                    br.unip.erp.util.Mascaras.moeda(p.getPreco())});
         }
     }
 
@@ -176,6 +177,9 @@ public class ProdutoView extends JInternalFrame {
     }
 
     private void excluir() {
+        if (!br.unip.erp.util.Permissao.podeExcluir(this)) {
+            return;
+        }
         if (txtCodigo.getText().isBlank()) {
             JOptionPane.showMessageDialog(this, "Selecione um produto para excluir.");
             return;

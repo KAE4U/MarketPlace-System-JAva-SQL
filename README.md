@@ -20,6 +20,13 @@ baseado no DER fornecido pelo professor.
   **baixa automática de estoque**.
 - **Compra**: seleção de fornecedor, adição de itens e **entrada automática de estoque**.
 - Operações de venda/compra são **transacionais** (cabeçalho + itens + estoque em um único commit).
+- **Histórico de Vendas e Compras** (menu Movimentos): lista os movimentos realizados e permite excluí-los.
+- **Controle de permissão por perfil**: o cadastro de usuário tem a opção **"Perfil administrador"**.
+  Apenas administradores podem **excluir** dados do sistema; um usuário comum que tente excluir recebe
+  uma mensagem informando a falta de permissão.
+- **Máscaras** de CPF/CNPJ e telefone nos cadastros de Cliente e Fornecedor, e **valores em R$**
+  (formato brasileiro) nas telas de produtos, vendas e compras.
+- **Tema claro/escuro** alternável em tempo real pelo menu **Exibir**.
 
 ---
 
