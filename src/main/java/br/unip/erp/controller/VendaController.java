@@ -33,6 +33,11 @@ public class VendaController {
         return dao.listar();
     }
 
+    /** Carrega uma venda completa (itens + pagamentos) para exibir detalhes. */
+    public Venda buscar(int codigo) {
+        return dao.buscarPorCodigo(codigo);
+    }
+
     /** Soma os itens e aplica o desconto do cabecalho para obter o total. */
     public void recalcularTotais(Venda v) {
         BigDecimal valor = BigDecimal.ZERO;

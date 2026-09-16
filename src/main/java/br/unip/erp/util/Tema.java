@@ -107,6 +107,37 @@ public final class Tema {
         campo.putClientProperty("JTextField.placeholderText", texto);
     }
 
+    /**
+     * Cria um campo de busca que filtra as linhas da tabela informada
+     * (case-insensitive, em todas as colunas). Instala um TableRowSorter na tabela.
+     *
+     * @return o JTextField de busca (para ser posicionado na tela)
+     */
+    public static javax.swing.JTextField criarCampoBusca(JTable tabela) {
+        javax.swing.table.TableRowSorter<javax.swing.table.TableModel> sorter =
+                new javax.swing.table.TableRowSorter<>(tabela.getModel());
+        tabela.setRowSorter(sorter);
+
+        javax.swing.JTextField campo = new javax.swing.JTextField(20);
+        placeholder(campo, "Buscar...");
+        campo.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            private void filtrar() {
+                String txt = campo.getText().trim();
+                if (txt.isEmpty()) {
+                    sorter.setRowFilter(null);
+                } else {
+                    // (?i) = case-insensitive; Pattern.quote evita erro com caracteres especiais
+                    sorter.setRowFilter(javax.swing.RowFilter.regexFilter(
+                            "(?i)" + java.util.regex.Pattern.quote(txt)));
+                }
+            }
+            @Override public void insertUpdate(javax.swing.event.DocumentEvent e) { filtrar(); }
+            @Override public void removeUpdate(javax.swing.event.DocumentEvent e) { filtrar(); }
+            @Override public void changedUpdate(javax.swing.event.DocumentEvent e) { filtrar(); }
+        });
+        return campo;
+    }
+
     /** Aplica o tema ESCURO e atualiza todas as janelas abertas. */
     public static void aplicarEscuro(java.awt.Component origem) {
         try {

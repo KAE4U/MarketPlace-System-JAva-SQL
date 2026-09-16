@@ -33,6 +33,11 @@ public class CompraController {
         return dao.listar();
     }
 
+    /** Carrega uma compra completa (itens) para exibir detalhes. */
+    public Compra buscar(int codigo) {
+        return dao.buscarPorCodigo(codigo);
+    }
+
     /** Soma os itens e aplica o desconto do cabecalho para obter o total. */
     public void recalcularTotais(Compra c) {
         BigDecimal valor = BigDecimal.ZERO;

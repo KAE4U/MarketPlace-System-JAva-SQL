@@ -36,6 +36,22 @@ public final class Mascaras {
         });
     }
 
+    /** Aplica mascara dinamica de data: dd/MM/aaaa. */
+    public static void data(JTextComponent campo) {
+        ((AbstractDocument) campo.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+                    throws BadLocationException {
+                aplicar(fb, offset, length, text, 8, Mascaras::formatarData);
+            }
+            @Override
+            public void insertString(FilterBypass fb, int offset, String text, AttributeSet attrs)
+                    throws BadLocationException {
+                replace(fb, offset, 0, text, attrs);
+            }
+        });
+    }
+
     /** Aplica mascara dinamica de telefone: (00) 0000-0000 ou (00) 00000-0000. */
     public static void telefone(JTextComponent campo) {
         ((AbstractDocument) campo.getDocument()).setDocumentFilter(new DocumentFilter() {
@@ -94,6 +110,15 @@ public final class Mascaras {
             if (i == 2 || i == 5) sb.append('.');
             if (i == 8) sb.append('/');
             if (i == 12) sb.append('-');
+            sb.append(d.charAt(i));
+        }
+        return sb.toString();
+    }
+
+    private static String formatarData(String d) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < d.length(); i++) {
+            if (i == 2 || i == 4) sb.append('/');
             sb.append(d.charAt(i));
         }
         return sb.toString();

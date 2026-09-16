@@ -45,19 +45,43 @@ public class HistoricoCompraView extends JInternalFrame {
 
         JPanel botoes = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 8));
         JButton btAtualizar = new JButton("Atualizar");
+        JButton btDetalhes = new JButton("Detalhes");
         JButton btExcluir = new JButton("Excluir");
         Tema.botaoSecundario(btAtualizar);
+        Tema.botaoPrimario(btDetalhes);
         Tema.botaoPerigo(btExcluir);
         btAtualizar.addActionListener(e -> carregarTabela());
+        btDetalhes.addActionListener(e -> verDetalhes());
         btExcluir.addActionListener(e -> excluir());
         botoes.add(btAtualizar);
+        botoes.add(btDetalhes);
         botoes.add(btExcluir);
+
+        // Duplo-clique na linha abre os detalhes
+        tabela.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    verDetalhes();
+                }
+            }
+        });
 
         setLayout(new BorderLayout(10, 10));
         ((JPanel) getContentPane()).setBorder(
                 BorderFactory.createEmptyBorder(12, 12, 12, 12));
         add(new JScrollPane(tabela), BorderLayout.CENTER);
         add(botoes, BorderLayout.SOUTH);
+    }
+
+    private void verDetalhes() {
+        int row = tabela.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Selecione uma compra para ver os detalhes.");
+            return;
+        }
+        int codigo = (int) tableModel.getValueAt(row, 0);
+        new DetalheCompraDialog(this, codigo).setVisible(true);
     }
 
     private void carregarTabela() {
