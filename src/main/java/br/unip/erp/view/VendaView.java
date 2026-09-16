@@ -11,6 +11,7 @@ import br.unip.erp.model.Venda;
 import br.unip.erp.model.VendaPagamento;
 import br.unip.erp.model.VendaProduto;
 import br.unip.erp.util.Sessao;
+import br.unip.erp.util.Tema;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -83,10 +84,13 @@ public class VendaView extends JInternalFrame {
         addItem.add(txtQtde);
         JButton btAddItem = new JButton("Adicionar");
         JButton btDelItem = new JButton("Remover");
+        Tema.botaoSecundario(btAddItem);
+        Tema.botaoSecundario(btDelItem);
         btAddItem.addActionListener(e -> adicionarItem());
         btDelItem.addActionListener(e -> removerItem());
         addItem.add(btAddItem);
         addItem.add(btDelItem);
+        Tema.estilizarTabela(tabelaItens);
         painelItens.add(addItem, BorderLayout.NORTH);
         painelItens.add(new JScrollPane(tabelaItens), BorderLayout.CENTER);
 
@@ -100,10 +104,13 @@ public class VendaView extends JInternalFrame {
         addPg.add(txtValorPg);
         JButton btAddPg = new JButton("Adicionar");
         JButton btDelPg = new JButton("Remover");
+        Tema.botaoSecundario(btAddPg);
+        Tema.botaoSecundario(btDelPg);
         btAddPg.addActionListener(e -> adicionarPagamento());
         btDelPg.addActionListener(e -> removerPagamento());
         addPg.add(btAddPg);
         addPg.add(btDelPg);
+        Tema.estilizarTabela(tabelaPagtos);
         painelPg.add(addPg, BorderLayout.NORTH);
         painelPg.add(new JScrollPane(tabelaPagtos), BorderLayout.CENTER);
 
@@ -112,10 +119,14 @@ public class VendaView extends JInternalFrame {
         centro.add(painelPg);
 
         // Rodape
-        JPanel rodape = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel rodape = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+        lblTotal.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 16));
+        lblTotal.setForeground(Tema.SUCESSO);
         rodape.add(lblTotal);
         JButton btFinalizar = new JButton("Finalizar Venda");
         JButton btNova = new JButton("Nova");
+        Tema.botaoPrimario(btFinalizar);
+        Tema.botaoSecundario(btNova);
         btFinalizar.addActionListener(e -> finalizar());
         btNova.addActionListener(e -> novaVenda());
         rodape.add(btNova);

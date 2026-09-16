@@ -3,6 +3,7 @@ package br.unip.erp.view;
 import br.unip.erp.controller.UsuarioController;
 import br.unip.erp.model.Usuario;
 import br.unip.erp.util.Sessao;
+import br.unip.erp.util.Tema;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -12,7 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -20,7 +21,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-/** Tela de login do sistema. */
+/** Tela de login do sistema (visual moderno, tema escuro). */
 public class LoginView extends JFrame {
 
     private final UsuarioController controller = new UsuarioController();
@@ -30,65 +31,80 @@ public class LoginView extends JFrame {
     public LoginView() {
         setTitle("EMPRESA X - Login");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(420, 320);
+        setSize(440, 400);
         setLocationRelativeTo(null);
         setResizable(false);
         montarTela();
     }
 
     private void montarTela() {
-        JPanel painel = new JPanel(new GridBagLayout());
-        painel.setBackground(new Color(30, 30, 40));
-        painel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
+        // Fundo geral
+        JPanel fundo = new JPanel(new GridBagLayout());
+        fundo.setBackground(Tema.FUNDO);
+
+        // Card central
+        JPanel card = new JPanel(new GridBagLayout());
+        card.setBackground(Tema.SUPERFICIE);
+        card.setBorder(BorderFactory.createEmptyBorder(32, 36, 32, 36));
+        card.putClientProperty("FlatLaf.style", "arc: 18");
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(6, 6, 6, 6);
+        gbc.insets = new Insets(6, 0, 6, 0);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 2;
 
-        JLabel titulo = new JLabel("Faca o seu login");
-        titulo.setFont(new Font("SansSerif", Font.BOLD, 22));
-        titulo.setForeground(Color.WHITE);
-        titulo.setHorizontalAlignment(SwingConstants.LEFT);
-        painel.add(titulo, gbc);
+        // Titulo com "ponto" de acento
+        JLabel titulo = new JLabel("Faça o seu login");
+        titulo.setFont(Tema.FONTE_TITULO);
+        titulo.setForeground(Tema.TEXTO);
+        card.add(titulo, gbc);
 
         gbc.gridy++;
+        JLabel subtitulo = new JLabel("Acesse o sistema para continuar");
+        subtitulo.setFont(new Font("SansSerif", Font.PLAIN, 12));
+        subtitulo.setForeground(Tema.TEXTO_SUAVE);
+        card.add(subtitulo, gbc);
+
+        gbc.gridy++;
+        gbc.insets = new Insets(16, 0, 2, 0);
         JLabel lblLogin = new JLabel("Login");
-        lblLogin.setForeground(Color.LIGHT_GRAY);
-        painel.add(lblLogin, gbc);
+        lblLogin.setForeground(Tema.TEXTO_SUAVE);
+        card.add(lblLogin, gbc);
 
         gbc.gridy++;
-        painel.add(txtLogin, gbc);
+        gbc.insets = new Insets(2, 0, 6, 0);
+        txtLogin.setPreferredSize(new Dimension(0, 38));
+        Tema.placeholder(txtLogin, "seu usuário");
+        card.add(txtLogin, gbc);
 
         gbc.gridy++;
+        gbc.insets = new Insets(8, 0, 2, 0);
         JLabel lblSenha = new JLabel("Senha");
-        lblSenha.setForeground(Color.LIGHT_GRAY);
-        painel.add(lblSenha, gbc);
+        lblSenha.setForeground(Tema.TEXTO_SUAVE);
+        card.add(lblSenha, gbc);
 
         gbc.gridy++;
-        painel.add(txtSenha, gbc);
+        gbc.insets = new Insets(2, 0, 6, 0);
+        txtSenha.setPreferredSize(new Dimension(0, 38));
+        Tema.placeholder(txtSenha, "sua senha");
+        card.add(txtSenha, gbc);
 
         gbc.gridy++;
+        gbc.insets = new Insets(20, 0, 6, 0);
         JButton btnEntrar = new JButton("Entrar");
-        btnEntrar.setBackground(new Color(120, 80, 200));
-        btnEntrar.setForeground(Color.WHITE);
-        btnEntrar.setFocusPainted(false);
-        btnEntrar.setPreferredSize(new Dimension(0, 36));
+        Tema.botaoPrimario(btnEntrar);
+        btnEntrar.setPreferredSize(new Dimension(0, 42));
         btnEntrar.addActionListener(e -> entrar());
-        painel.add(btnEntrar, gbc);
+        card.add(btnEntrar, gbc);
 
-        gbc.gridy++;
-        JLabel dica = new JLabel("Usuario padrao: admin / senha: admin");
-        dica.setForeground(Color.GRAY);
-        dica.setFont(new Font("SansSerif", Font.ITALIC, 11));
-        painel.add(dica, gbc);
+        fundo.add(card);
+        setContentPane(fundo);
 
-        // Enter na senha dispara o login
+        // Enter dispara o login
         txtSenha.addActionListener(e -> entrar());
-
-        setContentPane(painel);
+        txtLogin.addActionListener(e -> txtSenha.requestFocusInWindow());
+        getRootPane().setDefaultButton(btnEntrar);
     }
 
     private void entrar() {
@@ -98,7 +114,7 @@ public class LoginView extends JFrame {
             Usuario u = controller.autenticar(login, senha);
             if (u == null) {
                 JOptionPane.showMessageDialog(this,
-                        "Login ou senha invalidos.",
+                        "Login ou senha inválidos.",
                         "Acesso negado", JOptionPane.WARNING_MESSAGE);
                 return;
             }

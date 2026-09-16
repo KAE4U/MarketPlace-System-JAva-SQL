@@ -117,9 +117,16 @@ Ao iniciar, informe **admin / admin** na tela de login.
 
 ---
 
+## 🎨 Interface
+
+O sistema usa a biblioteca [**FlatLaf**](https://www.formdev.com/flatlaf/) para um visual
+moderno com **tema escuro** (flat design, cantos arredondados, cores de acento). O tema é
+centralizado na classe `util/Tema.java` e aplicado em `Main.java` antes de abrir as telas.
+
 ## 🧰 Tecnologias
 
 - Java 17 (Swing)
+- [FlatLaf 3.7.1](https://www.formdev.com/flatlaf/) — Look & Feel moderno (tema escuro)
 - Maven
 - PostgreSQL 17 (Supabase)
 - Driver JDBC `org.postgresql:postgresql`
