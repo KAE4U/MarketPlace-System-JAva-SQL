@@ -25,6 +25,13 @@
             <artifactId>postgresql</artifactId>
             <version>42.7.4</version>
         </dependency>
+
+        <!-- FlatLaf: Look & Feel moderno (tema escuro) para Swing -->
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>3.7.1</version>
+        </dependency>
     </dependencies>
 
     <build>

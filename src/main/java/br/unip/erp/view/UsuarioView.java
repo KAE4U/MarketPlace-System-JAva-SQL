@@ -2,7 +2,9 @@ package br.unip.erp.view;
 
 import br.unip.erp.controller.UsuarioController;
 import br.unip.erp.model.Usuario;
+import br.unip.erp.util.Tema;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JInternalFrame;
@@ -64,10 +66,13 @@ public class UsuarioView extends JInternalFrame {
         g.gridx = 1; form.add(txtSenha, g);
         g.gridx = 1; g.gridy = 4; form.add(chkAtivo, g);
 
-        JPanel botoes = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel botoes = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 8));
         JButton btNovo = new JButton("Novo");
         JButton btSalvar = new JButton("Salvar");
         JButton btExcluir = new JButton("Excluir");
+        Tema.botaoSecundario(btNovo);
+        Tema.botaoPrimario(btSalvar);
+        Tema.botaoPerigo(btExcluir);
         btNovo.addActionListener(e -> limpar());
         btSalvar.addActionListener(e -> salvar());
         btExcluir.addActionListener(e -> excluir());
@@ -77,12 +82,15 @@ public class UsuarioView extends JInternalFrame {
 
         tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tabela.getSelectionModel().addListSelectionListener(e -> selecionar());
+        Tema.estilizarTabela(tabela);
 
         JPanel topo = new JPanel(new BorderLayout());
         topo.add(form, BorderLayout.CENTER);
         topo.add(botoes, BorderLayout.SOUTH);
 
-        setLayout(new BorderLayout());
+        setLayout(new BorderLayout(10, 10));
+        ((JPanel) getContentPane()).setBorder(
+                BorderFactory.createEmptyBorder(12, 12, 12, 12));
         add(topo, BorderLayout.NORTH);
         add(new JScrollPane(tabela), BorderLayout.CENTER);
     }

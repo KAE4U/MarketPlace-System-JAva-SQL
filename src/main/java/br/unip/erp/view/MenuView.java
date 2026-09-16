@@ -1,14 +1,17 @@
 package br.unip.erp.view;
 
 import br.unip.erp.util.Sessao;
+import br.unip.erp.util.Tema;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 /**
  * Janela principal (MDI) com o menu do sistema:
@@ -20,13 +23,36 @@ public class MenuView extends JFrame {
     private final JDesktopPane desktop = new JDesktopPane();
 
     public MenuView() {
-        setTitle("EMPRESA X - Gerenciamento de Compra e Venda"
-                + "   [usuario: " + Sessao.getUsuarioLogado() + "]");
+        setTitle("EMPRESA X - Gerenciamento de Compra e Venda");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(900, 600);
+        setSize(980, 640);
         setLocationRelativeTo(null);
+        desktop.setBackground(Tema.FUNDO);
         setContentPane(desktop);
         setJMenuBar(criarMenu());
+        exibirBoasVindas();
+    }
+
+    /** Mensagem de boas-vindas centralizada no fundo do desktop. */
+    private void exibirBoasVindas() {
+        JLabel banner = new JLabel(
+                "<html><div style='text-align:center;'>"
+                        + "<span style='font-size:30px; color:#7c5ce8;'><b>EMPRESA X</b></span><br>"
+                        + "<span style='font-size:13px; color:#969ba8;'>Bem-vindo, "
+                        + Sessao.getUsuarioLogado()
+                        + " &nbsp;·&nbsp; use o menu acima para começar</span>"
+                        + "</div></html>", SwingConstants.CENTER);
+        banner.setVerticalAlignment(SwingConstants.CENTER);
+        banner.setBounds(0, 0, 980, 600);
+        desktop.add(banner, Integer.valueOf(0));
+
+        // mantem o banner centralizado quando a janela e redimensionada
+        desktop.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                banner.setBounds(0, 0, desktop.getWidth(), desktop.getHeight());
+            }
+        });
     }
 
     private JMenuBar criarMenu() {
