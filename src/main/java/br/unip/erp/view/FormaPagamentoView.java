@@ -81,11 +81,19 @@ public class FormaPagamentoView extends JInternalFrame {
         topo.add(form, BorderLayout.CENTER);
         topo.add(botoes, BorderLayout.SOUTH);
 
+        // Barra de busca acima da tabela
+        JPanel busca = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 4));
+        busca.add(new JLabel("Buscar:"));
+        busca.add(Tema.criarCampoBusca(tabela));
+        JPanel centro = new JPanel(new BorderLayout());
+        centro.add(busca, BorderLayout.NORTH);
+        centro.add(new JScrollPane(tabela), BorderLayout.CENTER);
+
         setLayout(new BorderLayout(10, 10));
         ((JPanel) getContentPane()).setBorder(
                 BorderFactory.createEmptyBorder(12, 12, 12, 12));
         add(topo, BorderLayout.NORTH);
-        add(new JScrollPane(tabela), BorderLayout.CENTER);
+        add(centro, BorderLayout.CENTER);
     }
 
     private void carregarTabela() {
@@ -101,6 +109,7 @@ public class FormaPagamentoView extends JInternalFrame {
         if (row < 0) {
             return;
         }
+        row = tabela.convertRowIndexToModel(row);
         txtCodigo.setText(String.valueOf(tableModel.getValueAt(row, 0)));
         txtNome.setText(String.valueOf(tableModel.getValueAt(row, 1)));
         chkAtivo.setSelected("S".equals(tableModel.getValueAt(row, 2)));

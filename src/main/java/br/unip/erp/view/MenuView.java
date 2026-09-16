@@ -92,6 +92,12 @@ public class MenuView extends JFrame {
         movimentos.add(miHistVenda);
         movimentos.add(miHistCompra);
 
+        // --- Relatorios ---
+        JMenu relatorios = new JMenu("Relatórios");
+        JMenuItem miRelatorios = new JMenuItem("Vendas e Produtos");
+        miRelatorios.addActionListener(e -> abrir(new RelatorioView()));
+        relatorios.add(miRelatorios);
+
         // --- Exibir (tema claro/escuro) ---
         JMenu exibir = new JMenu("Exibir");
         JMenuItem miTemaEscuro = new JMenuItem("Tema escuro");
@@ -112,6 +118,7 @@ public class MenuView extends JFrame {
 
         barra.add(cadastros);
         barra.add(movimentos);
+        barra.add(relatorios);
         barra.add(exibir);
         barra.add(sair);
         return barra;
